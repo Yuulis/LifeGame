@@ -39,7 +39,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			cnt += world[y + 1][x].previous;
 			cnt += world[y + 1][x + 1].previous;
 
-			
+			/*  About the game rule of Life Game
+			*
+			* Two variables "B" and "S" are defined like this:
+			* B = Number of surrounding cells required for birth
+			* S = Number of surrounding cells required for survival
+			*
+			* So, "B3/S23" means that B = 3 and S = 2, 3.
+			*
+			* <Game rule>
+			* 1 : B3/S23
+			*/
 
 			if (gameRule == 1) {
 				if (pre == 0) {
