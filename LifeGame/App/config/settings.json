@@ -4,7 +4,7 @@
     "height": 60
   },
 
-  "Density":  0.1,
+  "Density":  0.35,
   "DefaultSpeed": 0.5,
-  "GameRule": 1
+  "GameRule": 7
 }

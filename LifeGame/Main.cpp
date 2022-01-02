@@ -49,6 +49,13 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			*
 			* <Game rule>
 			* 1 : B3/S23
+			* 2 : B36/S23 (HighLife)
+			* 3 : B34/S34
+			* 4 : B3678/S34678 (Day and Night)
+			* 5 : B1357/S1357 (Replicator)
+			* 6 : B1357/S02468 (Replicator)
+			* 7 : B36/S125 (2x2) 
+			* 
 			*/
 
 			if (gameRule == 1) {
@@ -64,7 +71,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 
 			else if (gameRule == 2) {
 				if (pre == 0) {
-					if (cnt == 3) world[y][x].current = 1;
+					if (cnt == 3 || cnt == 6) world[y][x].current = 1;
 					else world[y][x].current = 0;
 				}
 				else if (pre == 1) {
@@ -75,22 +82,55 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 
 			else if (gameRule == 3) {
 				if (pre == 0) {
-					if (cnt == 3) world[y][x].current = 1;
+					if (cnt == 3 || cnt == 4) world[y][x].current = 1;
 					else world[y][x].current = 0;
 				}
 				else if (pre == 1) {
-					if (cnt == 2 || cnt == 3) world[y][x].current = 1;
+					if (cnt == 3 || cnt == 4) world[y][x].current = 1;
 					else world[y][x].current = 0;
 				}
 			}
 
 			else if (gameRule == 4) {
 				if (pre == 0) {
-					if (cnt == 3) world[y][x].current = 1;
+					if (cnt == 3 || cnt == 6 || cnt == 7 || cnt == 8) world[y][x].current = 1;
 					else world[y][x].current = 0;
 				}
 				else if (pre == 1) {
-					if (cnt == 2 || cnt == 3) world[y][x].current = 1;
+					if (cnt == 3 || cnt == 4 || cnt == 6 || cnt == 7 || cnt == 8) world[y][x].current = 1;
+					else world[y][x].current = 0;
+				}
+			}
+
+			else if (gameRule == 5) {
+				if (pre == 0) {
+					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) world[y][x].current = 1;
+					else world[y][x].current = 0;
+				}
+				else if (pre == 1) {
+					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) world[y][x].current = 1;
+					else world[y][x].current = 0;
+				}
+			}
+
+			else if (gameRule == 6) {
+				if (pre == 0) {
+					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) world[y][x].current = 1;
+					else world[y][x].current = 0;
+				}
+				else if (pre == 1) {
+					if (cnt == 0 || cnt == 2 || cnt == 4 || cnt == 6 || cnt == 8) world[y][x].current = 1;
+					else world[y][x].current = 0;
+				}
+			}
+
+			else if (gameRule == 7) {
+				if (pre == 0) {
+					if (cnt == 3 || cnt == 6) world[y][x].current = 1;
+					else world[y][x].current = 0;
+				}
+				else if (pre == 1) {
+					if (cnt == 1 || cnt == 2 || cnt == 5) world[y][x].current = 1;
 					else world[y][x].current = 0;
 				}
 			}
