@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31613.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LifeGame", "LifeGame\LifeGame.vcxproj", "{661A0D62-D4D7-48CF-ADE0-E168C6298F0B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{661A0D62-D4D7-48CF-ADE0-E168C6298F0B}.Debug|x64.ActiveCfg = Debug|x64
+		{661A0D62-D4D7-48CF-ADE0-E168C6298F0B}.Debug|x64.Build.0 = Debug|x64
+		{661A0D62-D4D7-48CF-ADE0-E168C6298F0B}.Release|x64.ActiveCfg = Release|x64
+		{661A0D62-D4D7-48CF-ADE0-E168C6298F0B}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {55651B6F-EF2F-4717-BE3F-5062AD53929D}
+	EndGlobalSection
+EndGlobal
