@@ -192,29 +192,32 @@ void Main() {
 	SetTerminationTriggers(UserAction::CloseButtonClicked);
 	while (Update())
 	{
+		Window::Resize(width * 10 + 300, height * 10);
+
 		// When Button "Set Random" was pushed
-		if (ButtonAt(U"Set Random", Vec2{ 700, 40 }, 170, !autoPlay)) {
+		if (ButtonAt(U"Set Random", Vec2{ width * 10 + 100, 40 }, 170, !autoPlay)) {
 			RandomInit(world, density);
 			imgUpdate = true;
 		}
 
 		// When Button "Clear" was pushed
-		if (ButtonAt(U"Clear", Vec2{ 700, 80 }, 170, !autoPlay)) {
+		if (ButtonAt(U"Clear", Vec2{ width * 10 + 100, 80 }, 170, !autoPlay)) {
 			world.fill({ 0, 0 });
 			imgUpdate = true;
 		}
 
+
 		// When Button "Run / Pause" was pushed
-		if (ButtonAt(autoPlay ? U"Pause" : U"Run", Vec2{700, 160}, 170)) {
+		if (ButtonAt(autoPlay ? U"Pause" : U"Run", Vec2{ width * 10 + 100, 160 }, 170)) {
 			autoPlay = !autoPlay;
 		}
 
 		// Update speed Slider
-		SliderAt(U"Speed", speed, 1.0, 0.1, Vec2{700, 200}, 70, 100);
+		SliderAt(U"Speed", speed, 1.0, 0.1, Vec2{ width * 10 + 100, 200 }, 70, 100);
 
 		// When Button "Go to next step" was pushed
 		// Checking update
-		if (ButtonAt(U"Go to next step", Vec2{700, 240}, 170, !autoPlay)
+		if (ButtonAt(U"Go to next step", Vec2{ width * 10 + 100, 240 }, 170, !autoPlay)
 			|| (autoPlay && stopwatch.sF() >= (speed * speed)))
 		{
 			UpdateWorld(world, gameRule);
@@ -246,17 +249,19 @@ void Main() {
 		texture.scaled(10).draw();
 
 		// Draw grid
-		for (auto i : step(61))
+		for (auto i : step(height + 1))
 		{
-			Rect{ 0, i * 10, 600, 1 }.draw(ColorF{ 0.4 });
-			Rect{ i * 10, 0, 1, 600 }.draw(ColorF{ 0.4 });
+			Rect{ 0, i * 10, width * 10, 1 }.draw(ColorF{ 0.4 });
+			
+		}
+		for (auto i : step(width + 1)) {
+			Rect{ i * 10, 0, 1, height * 10 }.draw(ColorF{ 0.4 });
 		}
 
-		if (!autoPlay && Rect{ 0, 0, 599 }.mouseOver())
+		if (!autoPlay && Rect{ 0, 0, width * 10 - 1, height * 10 - 1 }.mouseOver())
 		{
 			Cursor::RequestStyle(CursorStyle::Hidden);
 			Rect{ Cursor::Pos() / 10 * 10, 10 }.draw(Palette::Orange);
 		}
-
 	}
 }
