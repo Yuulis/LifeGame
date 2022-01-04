@@ -9,7 +9,12 @@ struct Cell
 {
 	bool previous : 1 = 0;
 	bool current : 1 = 0;
+	ColorF previousColor = { 0, 0, 0 };
+	ColorF currentColor = { 0, 0, 0 };
 };
+
+// Cell's color options  (brack, red, green, blue, white)
+Array<ColorF> CellColorList = { { 0, 0, 0 }, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 }, { 255, 255, 255 } };
 
 void RandomInit(Grid<Cell>& world, double rate) {
 	world.fill(Cell{});
@@ -17,7 +22,8 @@ void RandomInit(Grid<Cell>& world, double rate) {
 	for (auto y : Range(1, world.height() - 2))
 	{
 		for (auto x : Range(1, world.width() - 2)) {
-			world[y][x] = Cell{0, RandomBool(rate)};
+
+			world[y][x] = Cell{ 0, RandomBool(rate), { 0, 0, 0 }, CellColorList[Random(4)] };
 		}
 	}
 }
@@ -25,6 +31,7 @@ void RandomInit(Grid<Cell>& world, double rate) {
 void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 	for (auto& cell : world) {
 		cell.previous = cell.current;
+		cell.previousColor = cell.currentColor;
 	}
 
 	for (auto y : Range(1, world.height() - 2)) {
@@ -32,14 +39,26 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			const int32 pre = world[y][x].previous;
 
 			int32 cnt = 0;
-			cnt += world[y - 1][x - 1].previous;
-			cnt += world[y - 1][x].previous;
-			cnt += world[y - 1][x + 1].previous;
-			cnt += world[y][x - 1].previous;
-			cnt += world[y][x + 1].previous;
-			cnt += world[y + 1][x - 1].previous;
-			cnt += world[y + 1][x].previous;
-			cnt += world[y + 1][x + 1].previous;
+			int cntR = 0, cntG = 0, cntB = 0;
+			for (int i = -1; i < 2; i++)
+			{
+				for (int j = -1; j < 2; j++)
+				{
+					if (i == 0 && j == 0) continue;
+
+					cnt += world[y + i][x + j].previous;
+					cntR += world[y + i][x + j].previousColor.r;
+					cntG += world[y + i][x + j].previousColor.g;
+					cntB += world[y + i][x + j].previousColor.b;
+				}
+			}
+			cntR %= 256;
+			cntG %= 256;
+			cntB %= 256;
+
+			cntR /= cnt;
+			cntG /= cnt;
+			cntB /= cnt;
 
 			/*  About the game rule of Life Game
 			*
@@ -62,78 +81,162 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 
 			if (gameRule == 1) {
 				if (pre == 0) {
-					if (cnt == 3) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 2 || cnt == 3) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 2 || cnt == 3) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 
 			else if (gameRule == 2) {
 				if (pre == 0) {
-					if (cnt == 3 || cnt == 6) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3 || cnt == 6) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 2 || cnt == 3) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 2 || cnt == 3) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 
 			else if (gameRule == 3) {
 				if (pre == 0) {
-					if (cnt == 3 || cnt == 4) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3 || cnt == 4) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 3 || cnt == 4) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3 || cnt == 4) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 
 			else if (gameRule == 4) {
 				if (pre == 0) {
-					if (cnt == 3 || cnt == 6 || cnt == 7 || cnt == 8) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3 || cnt == 6 || cnt == 7 || cnt == 8) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 3 || cnt == 4 || cnt == 6 || cnt == 7 || cnt == 8) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3 || cnt == 4 || cnt == 6 || cnt == 7 || cnt == 8) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 
 			else if (gameRule == 5) {
 				if (pre == 0) {
-					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 
 			else if (gameRule == 6) {
 				if (pre == 0) {
-					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 0 || cnt == 2 || cnt == 4 || cnt == 6 || cnt == 8) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 0 || cnt == 2 || cnt == 4 || cnt == 6 || cnt == 8) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 
 			else if (gameRule == 7) {
 				if (pre == 0) {
-					if (cnt == 3 || cnt == 6) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 3 || cnt == 6) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 				else if (pre == 1) {
-					if (cnt == 1 || cnt == 2 || cnt == 5) world[y][x].current = 1;
-					else world[y][x].current = 0;
+					if (cnt == 1 || cnt == 2 || cnt == 5) {
+						world[y][x].current = 1;
+						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+					}
+					else {
+						world[y][x].current = 0;
+						world[y][x].currentColor = world[y][x].previousColor;
+					}
 				}
 			}
 		}
@@ -143,8 +246,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 void CopyToImg(const Grid<Cell>& world, Image& img) {
 	for (auto y : step(img.height())) {
 		for (auto x : step(img.width())) {
-			img[y][x] = world[y + 1][x + 1].current ? Color{ 0, 255, 0 } : Palette::Black;
-
+			img[y][x] = world[y+1][x+1].currentColor;
 		}
 	}
 }
@@ -251,6 +353,7 @@ void Main() {
 
 			if (MouseL.pressed()) {
 				world[MousePos].current = true;
+				world[MousePos].currentColor = ColorF{ 0, 255, 0 };
 				imgUpdate = true;
 			}
 			else if (MouseR.pressed()) {
