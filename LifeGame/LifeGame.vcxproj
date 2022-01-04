@@ -143,7 +143,6 @@
     <Image Include="App\example\texture\uv.png" />
     <Image Include="App\example\texture\wood.jpg" />
     <Image Include="App\example\windmill.png" />
-    <Image Include="App\icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="App\Resource.rc" />

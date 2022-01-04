@@ -146,9 +146,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="App\icon.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="App\engine\texture\box-shadow\8.png">
       <Filter>Resource Files\engine\texture\box-shadow</Filter>
     </Image>

@@ -201,6 +201,7 @@ void Main() {
 	// Update img?
 	bool imgUpdate = false;
 
+	Window::SetTitle(U"Life Game");
 	SetTerminationTriggers(UserAction::CloseButtonClicked);
 	while (Update())
 	{
