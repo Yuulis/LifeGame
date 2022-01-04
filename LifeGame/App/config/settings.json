@@ -5,6 +5,5 @@
   },
 
   "Density":  0.35,
-  "DefaultSpeed": 0.5,
-  "GameRule": 4
+  "DefaultSpeed": 0.5
 }

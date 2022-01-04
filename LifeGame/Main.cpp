@@ -1,6 +1,8 @@
 ﻿# include <Siv3D.hpp> // OpenSiv3D v0.6.3
+using namespace std;
 using namespace System;
 using namespace SimpleGUI;
+
 
 // 1 cell => 1bit
 struct Cell
@@ -53,7 +55,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			* 3 : B34/S34
 			* 4 : B3678/S34678 (Day and Night)
 			* 5 : B1357/S1357 (Replicator)
-			* 6 : B1357/S02468 (Replicator)
+			* 6 : B1357/S02468 (Replicator2 / Fredkin)
 			* 7 : B36/S125 (2x2) 
 			* 
 			*/
@@ -162,13 +164,23 @@ void Main() {
 	// Update speed
 	double speed = settings[U"DefaultSpeed"].get<double>();
 
-	// Game rule
-	const int32 gameRule = settings[U"GameRule"].get<int32>();
-
 	// Cell density
 	const double density = settings[U"Density"].get<double>();
 
 	// ======================
+
+	// Game rule
+	// const int32 gameRule = settings[U"GameRule"].get<int32>();
+	size_t gameRuleIndex = 0;
+	const Array<String> textOptions = { U"1 : B3/S23",
+										U"2 : B36/S23",
+										U"3 : B34/S34",
+										U"4 : B3678/S34678",
+										U"5 : B1357/S1357",
+										U"6 : B1357/S02468",
+										U"7 : B36/S125" };
+	const Array<int32> gameRuleOptions = { 1, 2, 3, 4, 5, 6, 7 };
+	int32 gameRule = gameRuleOptions[(int32)gameRuleIndex];
 
 
 	// World data
@@ -192,32 +204,32 @@ void Main() {
 	SetTerminationTriggers(UserAction::CloseButtonClicked);
 	while (Update())
 	{
-		Window::Resize(width * 10 + 300, height * 10);
+		Window::Resize(width * 10 + 240, (height >= 65 ? height * 10 : 650));
 
 		// When Button "Set Random" was pushed
-		if (ButtonAt(U"Set Random", Vec2{ width * 10 + 100, 40 }, 170, !autoPlay)) {
+		if (ButtonAt(U"Set Random", Vec2{ width * 10 + 120, 40 }, 200, !autoPlay)) {
 			RandomInit(world, density);
 			imgUpdate = true;
 		}
 
 		// When Button "Clear" was pushed
-		if (ButtonAt(U"Clear", Vec2{ width * 10 + 100, 80 }, 170, !autoPlay)) {
+		if (ButtonAt(U"Clear", Vec2{ width * 10 + 120, 80 }, 200, !autoPlay)) {
 			world.fill({ 0, 0 });
 			imgUpdate = true;
 		}
 
 
 		// When Button "Run / Pause" was pushed
-		if (ButtonAt(autoPlay ? U"Pause" : U"Run", Vec2{ width * 10 + 100, 160 }, 170)) {
+		if (ButtonAt(autoPlay ? U"Pause" : U"Run", Vec2{ width * 10 + 120, 160 }, 200)) {
 			autoPlay = !autoPlay;
 		}
 
 		// Update speed Slider
-		SliderAt(U"Speed", speed, 1.0, 0.1, Vec2{ width * 10 + 100, 200 }, 70, 100);
+		SliderAt(U"Speed", speed, 1.0, 0.1, Vec2{ width * 10 + 120, 200 }, 70, 130);
 
 		// When Button "Go to next step" was pushed
 		// Checking update
-		if (ButtonAt(U"Go to next step", Vec2{ width * 10 + 100, 240 }, 170, !autoPlay)
+		if (ButtonAt(U"Go to next step", Vec2{ width * 10 + 120, 240 }, 200, !autoPlay)
 			|| (autoPlay && stopwatch.sF() >= (speed * speed)))
 		{
 			UpdateWorld(world, gameRule);
@@ -225,8 +237,15 @@ void Main() {
 			stopwatch.restart();
 		}
 
+		// When Radio button "Game Rule" was changed
+		SimpleGUI::Headline(U"Game rule option", Vec2{ width * 10 + 17.5, 300 }, 200, !autoPlay);
+		if (SimpleGUI::RadioButtons(gameRuleIndex, textOptions, Vec2{ width * 10 + 17.5, 340 }, 200, !autoPlay))
+		{
+			gameRule = gameRuleOptions[gameRuleIndex];
+		}
+
 		// Edit cell on the field
-		if (!autoPlay && Rect{ 0, 0, 599 }.mouseOver()) {
+		if (!autoPlay && Rect{ 0, 0, width * 10 - 1, height * 10 - 1 }.mouseOver()) {
 			const Point MousePos = Cursor::Pos() / 10 + Point{1, 1};
 
 			if (MouseL.pressed()) {
