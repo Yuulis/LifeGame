@@ -9,12 +9,12 @@ struct Cell
 {
 	bool previous : 1 = 0;
 	bool current : 1 = 0;
-	ColorF previousColor = { 0, 0, 0 };
-	ColorF currentColor = { 0, 0, 0 };
+	Color previousColor = { 0, 0, 0 };
+	Color currentColor = { 0, 0, 0 };
 };
 
 // Cell's color options  (brack, red, green, blue, white)
-Array<ColorF> CellColorList = { { 0, 0, 0 }, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 }, { 255, 255, 255 } };
+Array<Color> CellColorList = { { 0, 0, 0 }, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 }, { 255, 255, 255 } };
 
 void RandomInit(Grid<Cell>& world, double rate) {
 	world.fill(Cell{});
@@ -46,19 +46,26 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				{
 					if (i == 0 && j == 0) continue;
 
-					cnt += world[y + i][x + j].previous;
-					cntR += world[y + i][x + j].previousColor.r;
-					cntG += world[y + i][x + j].previousColor.g;
-					cntB += world[y + i][x + j].previousColor.b;
+					if (cnt += world[y + i][x + j].previous) {
+						cnt++;
+						cntR += world[y + i][x + j].previousColor.r;
+						cntG += world[y + i][x + j].previousColor.g;
+						cntB += world[y + i][x + j].previousColor.b;
+					}
+					
 				}
 			}
-			cntR %= 256;
-			cntG %= 256;
-			cntB %= 256;
 
-			cntR /= cnt;
-			cntG /= cnt;
-			cntB /= cnt;
+			if (cnt != 0) {
+				cntR /= cnt;
+				cntG /= cnt;
+				cntB /= cnt;
+			}
+			
+			Color next = { static_cast<Color::value_type>(cntR),
+						   static_cast<Color::value_type>(cntG),
+						   static_cast<Color::value_type>(cntB)
+			};
 
 			/*  About the game rule of Life Game
 			*
@@ -83,7 +90,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 3) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -93,7 +100,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 2 || cnt == 3) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -106,7 +113,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 3 || cnt == 6) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -116,7 +123,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 2 || cnt == 3) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -129,7 +136,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 3 || cnt == 4) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -139,7 +146,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 3 || cnt == 4) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -152,7 +159,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 3 || cnt == 6 || cnt == 7 || cnt == 8) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -162,7 +169,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 3 || cnt == 4 || cnt == 6 || cnt == 7 || cnt == 8) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -175,7 +182,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -185,7 +192,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -198,7 +205,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -208,7 +215,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 0 || cnt == 2 || cnt == 4 || cnt == 6 || cnt == 8) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -221,7 +228,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				if (pre == 0) {
 					if (cnt == 3 || cnt == 6) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -231,7 +238,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 				else if (pre == 1) {
 					if (cnt == 1 || cnt == 2 || cnt == 5) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = ColorF{ cntR, cntG, cntB };
+						world[y][x].currentColor = next;
 					}
 					else {
 						world[y][x].current = 0;
@@ -353,7 +360,7 @@ void Main() {
 
 			if (MouseL.pressed()) {
 				world[MousePos].current = true;
-				world[MousePos].currentColor = ColorF{ 0, 255, 0 };
+				world[MousePos].currentColor = Color{ 0, 255, 0 };
 				imgUpdate = true;
 			}
 			else if (MouseR.pressed()) {
