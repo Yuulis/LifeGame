@@ -32,14 +32,13 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			const int32 pre = world[y][x].previous;
 
 			int32 cnt = 0;
-			cnt += world[y - 1][x - 1].previous;
-			cnt += world[y - 1][x].previous;
-			cnt += world[y - 1][x + 1].previous;
-			cnt += world[y][x - 1].previous;
-			cnt += world[y][x + 1].previous;
-			cnt += world[y + 1][x - 1].previous;
-			cnt += world[y + 1][x].previous;
-			cnt += world[y + 1][x + 1].previous;
+			for (int i = -1; i < 2; i++) {
+				for (int j = -1; j < 2; j++) {
+					if (i == 0 && j == 0) continue;
+
+					cnt += world[y + i][x + j].previous;
+				}
+			}
 
 			/*  About the game rule of Life Game
 			*
