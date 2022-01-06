@@ -9,12 +9,12 @@ struct Cell
 {
 	bool previous : 1 = 0;
 	bool current : 1 = 0;
-	Color previousColor = { 0, 0, 0 };
-	Color currentColor = { 0, 0, 0 };
+	ColorF previousColor = { 0, 0, 0 };
+	ColorF currentColor = { 0, 0, 0 };
 };
 
 // Cell's color options  (brack, red, green, blue, white)
-Array<Color> CellColorList = { { 0, 0, 0 }, { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 }, { 255, 255, 255 } };
+Array<ColorF> CellColorList = { { 0, 0, 0 }, { 1, 0, 0 }, { 0, 1, 0 }, { 0, 0, 1 }, { 1, 1, 1 } };
 
 void RandomInit(Grid<Cell>& world, double rate) {
 	world.fill(Cell{});
@@ -22,8 +22,8 @@ void RandomInit(Grid<Cell>& world, double rate) {
 	for (auto y : Range(1, world.height() - 2))
 	{
 		for (auto x : Range(1, world.width() - 2)) {
-
-			world[y][x] = Cell{ 0, RandomBool(rate), { 0, 0, 0 }, CellColorList[Random(4)] };
+			if (RandomBool(rate)) world[y][x] = Cell{ 0, 1, { 0, 0, 0 }, CellColorList[Random(1, 4)] };
+			else world[y][x] = Cell{ 0, 0, { 0, 0, 0 }, CellColorList[0] };
 		}
 	}
 }
@@ -39,33 +39,24 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			const int32 pre = world[y][x].previous;
 
 			int32 cnt = 0;
-			int cntR = 0, cntG = 0, cntB = 0;
+			ColorF next = { 0, 0, 0 };
 			for (int i = -1; i < 2; i++)
 			{
 				for (int j = -1; j < 2; j++)
 				{
 					if (i == 0 && j == 0) continue;
 
-					if (cnt += world[y + i][x + j].previous) {
+					if (world[y + i][x + j].previous) {
 						cnt++;
-						cntR += world[y + i][x + j].previousColor.r;
-						cntG += world[y + i][x + j].previousColor.g;
-						cntB += world[y + i][x + j].previousColor.b;
+						next += world[y + i][x + i].previousColor;
 					}
 					
 				}
 			}
 
 			if (cnt != 0) {
-				cntR /= cnt;
-				cntG /= cnt;
-				cntB /= cnt;
+				next *= (1 / (double)cnt);
 			}
-			
-			Color next = { static_cast<Color::value_type>(cntR),
-						   static_cast<Color::value_type>(cntG),
-						   static_cast<Color::value_type>(cntB)
-			};
 
 			/*  About the game rule of Life Game
 			*
@@ -94,17 +85,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 2 || cnt == 3) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
@@ -117,17 +108,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 2 || cnt == 3) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
@@ -140,17 +131,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 3 || cnt == 4) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
@@ -163,17 +154,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 3 || cnt == 4 || cnt == 6 || cnt == 7 || cnt == 8) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
@@ -186,17 +177,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 1 || cnt == 3 || cnt == 5 || cnt == 7) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
@@ -209,17 +200,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 0 || cnt == 2 || cnt == 4 || cnt == 6 || cnt == 8) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
@@ -232,17 +223,17 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 				else if (pre == 1) {
 					if (cnt == 1 || cnt == 2 || cnt == 5) {
 						world[y][x].current = 1;
-						world[y][x].currentColor = next;
+						world[y][x].currentColor = world[y][x].previousColor;
 					}
 					else {
 						world[y][x].current = 0;
-						world[y][x].currentColor = world[y][x].previousColor;
+						world[y][x].currentColor = ColorF{ 0, 0, 0 };
 					}
 				}
 			}
