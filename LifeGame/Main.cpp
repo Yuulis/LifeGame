@@ -201,7 +201,7 @@ void Main() {
 	// Step counter
 	int32 stepCounter = 0;
 
-	SetTitle(U"Life Game");
+	SetTitle(U"Life Game  ver1.0");
 	SetTerminationTriggers(UserAction::CloseButtonClicked);
 	while (Update())
 	{
