@@ -202,6 +202,9 @@ void Main() {
 	// Update img?
 	bool imgUpdate = false;
 
+	// Step counter
+	int32 stepCounter = 0;
+
 	SetTitle(U"Life Game");
 	SetTerminationTriggers(UserAction::CloseButtonClicked);
 	while (Update())
@@ -211,12 +214,14 @@ void Main() {
 		// When Button "Set Random" was pushed
 		if (ButtonAt(U"Set Random", Vec2{ width * 10 + 140, 40 }, 245, !autoPlay)) {
 			RandomInit(world, density);
+			stepCounter = 0;
 			imgUpdate = true;
 		}
 
 		// When Button "Clear" was pushed
 		if (ButtonAt(U"Clear", Vec2{ width * 10 + 140, 80 }, 245, !autoPlay)) {
 			world.fill({ 0, 0 });
+			stepCounter = 0;
 			imgUpdate = true;
 		}
 
@@ -237,6 +242,7 @@ void Main() {
 			|| (autoPlay && stopwatch.sF() >= (speed * speed)))
 		{
 			UpdateWorld(world, gameRule);
+			stepCounter++;
 			imgUpdate = true;
 			stopwatch.restart();
 		}
@@ -261,6 +267,9 @@ void Main() {
 				imgUpdate = true;
 			}
 		}
+
+		// Show step counter
+		Headline(U"Steps : {}"_fmt(stepCounter), Vec2{ width * 10 + 17.5, 640 }, 245);
 
 		// Update image
 		if (imgUpdate) {
