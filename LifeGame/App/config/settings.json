@@ -4,6 +4,6 @@
     "height": 70
   },
 
-  "Density":  0.35,
+  "DefaultDensity": 0.35,
   "DefaultSpeed": 0.5
 }

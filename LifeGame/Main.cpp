@@ -2,6 +2,8 @@
 using namespace std;
 using namespace System;
 using namespace SimpleGUI;
+using namespace Window;
+using namespace Palette;
 
 
 // 1 cell => 1bit
@@ -142,7 +144,7 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 void CopyToImg(const Grid<Cell>& world, Image& img) {
 	for (auto y : step(img.height())) {
 		for (auto x : step(img.width())) {
-			img[y][x] = world[y + 1][x + 1].current ? Color{ 0, 255, 0 } : Palette::Black;
+			img[y][x] = world[y + 1][x + 1].current ? Color{ 0, 255, 0 } : Black;
 
 		}
 	}
@@ -164,7 +166,7 @@ void Main() {
 	double speed = settings[U"DefaultSpeed"].get<double>();
 
 	// Cell density
-	const double density = settings[U"Density"].get<double>();
+	double density = settings[U"DefaultDensity"].get<double>();
 
 	// ======================
 
@@ -186,7 +188,7 @@ void Main() {
 	Grid<Cell> world(width + 2, height + 2, Cell{ 0,0 });
 
 	// For visualization
-	Image img{(uint32)width, (uint32)height, Palette::Black};
+	Image img{(uint32)width, (uint32)height, Black};
 
 	// Texture
 	DynamicTexture texture{img};
@@ -200,36 +202,38 @@ void Main() {
 	// Update img?
 	bool imgUpdate = false;
 
-	Window::SetTitle(U"Life Game");
+	SetTitle(U"Life Game");
 	SetTerminationTriggers(UserAction::CloseButtonClicked);
 	while (Update())
 	{
-		Window::Resize(width * 10 + 240, (height >= 65 ? height * 10 : 650));
+		Resize(width * 10 + 280, (height >= 65 ? height * 10 : 650));
 
 		// When Button "Set Random" was pushed
-		if (ButtonAt(U"Set Random", Vec2{ width * 10 + 120, 40 }, 200, !autoPlay)) {
+		if (ButtonAt(U"Set Random", Vec2{ width * 10 + 140, 40 }, 245, !autoPlay)) {
 			RandomInit(world, density);
 			imgUpdate = true;
 		}
 
 		// When Button "Clear" was pushed
-		if (ButtonAt(U"Clear", Vec2{ width * 10 + 120, 80 }, 200, !autoPlay)) {
+		if (ButtonAt(U"Clear", Vec2{ width * 10 + 140, 80 }, 245, !autoPlay)) {
 			world.fill({ 0, 0 });
 			imgUpdate = true;
 		}
 
+		// Density Slider
+		SliderAt(U"Density {:.1f}"_fmt((density - 0.1) / 0.8 * 100), density, 0.1, 0.9, Vec2{ width * 10 + 140, 120 }, 120, 125, !autoPlay);
 
 		// When Button "Run / Pause" was pushed
-		if (ButtonAt(autoPlay ? U"Pause" : U"Run", Vec2{ width * 10 + 120, 160 }, 200)) {
+		if (ButtonAt(autoPlay ? U"Pause" : U"Run", Vec2{ width * 10 + 140, 180 }, 245)) {
 			autoPlay = !autoPlay;
 		}
 
-		// Update speed Slider
-		SliderAt(U"Speed", speed, 1.0, 0.1, Vec2{ width * 10 + 120, 200 }, 70, 130);
+		// Speed Slider
+		SliderAt(U"Speed", speed, 1.0, 0.05, Vec2{ width * 10 + 140, 220 }, 70, 175);
 
 		// When Button "Go to next step" was pushed
 		// Checking update
-		if (ButtonAt(U"Go to next step", Vec2{ width * 10 + 120, 240 }, 200, !autoPlay)
+		if (ButtonAt(U"Go to next step", Vec2{ width * 10 + 140, 260 }, 245, !autoPlay)
 			|| (autoPlay && stopwatch.sF() >= (speed * speed)))
 		{
 			UpdateWorld(world, gameRule);
@@ -238,8 +242,8 @@ void Main() {
 		}
 
 		// When Radio button "Game Rule" was changed
-		SimpleGUI::Headline(U"Game rule option", Vec2{ width * 10 + 17.5, 300 }, 200, !autoPlay);
-		if (SimpleGUI::RadioButtons(gameRuleIndex, textOptions, Vec2{ width * 10 + 17.5, 340 }, 200, !autoPlay))
+		Headline(U"Game rule option", Vec2{ width * 10 + 17.5, 300 }, 245, !autoPlay);
+		if (RadioButtons(gameRuleIndex, textOptions, Vec2{ width * 10 + 17.5, 340 }, 245, !autoPlay))
 		{
 			gameRule = gameRuleOptions[gameRuleIndex];
 		}
@@ -280,7 +284,7 @@ void Main() {
 		if (!autoPlay && Rect{ 0, 0, width * 10 - 1, height * 10 - 1 }.mouseOver())
 		{
 			Cursor::RequestStyle(CursorStyle::Hidden);
-			Rect{ Cursor::Pos() / 10 * 10, 10 }.draw(Palette::Orange);
+			Rect{ Cursor::Pos() / 10 * 10, 10 }.draw(Orange);
 		}
 	}
 }
