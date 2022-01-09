@@ -50,9 +50,9 @@ void UpdateWorld(Grid<Cell>& world, int32 gameRule) {
 			* So, "B3/S23" means that B = 3 and S = 2, 3.
 			*
 			* <Game rule>
-			* 1 : B3/S23
+			* 1 : B3/S23 (Default)
 			* 2 : B36/S23 (HighLife)
-			* 3 : B34/S34
+			* 3 : B34/S34 (3-4Life)
 			* 4 : B3678/S34678 (Day and Night)
 			* 5 : B1357/S1357 (Replicator)
 			* 6 : B1357/S02468 (Replicator2 / Fredkin)
