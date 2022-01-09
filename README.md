@@ -19,13 +19,13 @@ Latest and stable release is ``release-1.0``(Ver 1.0).
 
 |   Version   | Release Date  | Download |  Source  |
 |:-----------:|:-------------:|:--------:|:--------:|
-| release-1.0 |  2021/01/08   | [Here]() | [Here]() |
+| release-1.0 |  2021/01/08   | [Here](https://github.com/Yuulis/LifeGame/releases/tag/ver1.0) | [Here](https://github.com/Yuulis/LifeGame/tree/release-1.0) |
 
 ## How to Use
 
 ### Download
 
-* You can download this app from [here](). The size is about xxMB.
+* You can download this app from [here](https://github.com/Yuulis/LifeGame/releases/tag/ver1.0). The size is about 37.0MB.
 * Unzip the downloaded zip file wherever you like.
 * Launch ``Life Game  Ver1.0/App/LifeGame.exe``, you can play it!
 
@@ -61,7 +61,7 @@ Two variables ``B`` and ``S`` are defined like this:
 * ``B`` = Number of surrounding cells required for birth
 * ``S`` = Number of surrounding cells required for survival
 
-So, "B3/S23" means that B = 3 and S = 2, 3.
+So, "B3/S23" means that ``B = 3`` and ``S = 2, 3``.
 
 **Game rules list**
 * 1 : B3/S23 (Default)
