@@ -23,10 +23,10 @@ Latest and stable release is ``release-1.0``(Ver 1.0).
 
 ## How to Use
 
-### Installation
+### Download
 
-* You can install this app from [here](). The size is about xxMB.
-* Unzip the installed zip file wherever you like.
+* You can download this app from [here](). The size is about xxMB.
+* Unzip the downloaded zip file wherever you like.
 * Launch ``Life Game  Ver1.0/App/LifeGame.exe``, you can play it!
 
 ### About UI
@@ -57,9 +57,9 @@ Show how many generations have passed since the simulation start.
 
 ### About Game Rule
 
-Two variables "B" and "S" are defined like this:
-* B = Number of surrounding cells required for birth
-* S = Number of surrounding cells required for survival
+Two variables ``B`` and ``S`` are defined like this:
+* ``B`` = Number of surrounding cells required for birth
+* ``S`` = Number of surrounding cells required for survival
 
 So, "B3/S23" means that B = 3 and S = 2, 3.
 
@@ -96,7 +96,7 @@ If you try, open ``Life Game  Ver1.0/App/config/settings.json`` and edit the val
 
 ## Feedback
 
-For problems about the installation and playing this, or suggestions to this README, please [submit a Github issue](https://github.com/Yuulis/LifeGame/issues).
+For problems about the download and playing this, or suggestions to this README, please [submit a Github issue](https://github.com/Yuulis/LifeGame/issues).
 
 ## Licence
 
