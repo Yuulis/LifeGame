@@ -30,6 +30,8 @@ Latest and stable release is ``release-1.0``(Ver 1.0).
 * Unzip the downloaded zip file wherever you like.
 * Launch ``Life Game  Ver1.0/App/LifeGame.exe``, you can play it!
 
+You may get a warning when downloading the zip file and when running the application, but you can safely ignore it.
+
 ### About UI
 
 <p align="center">
