@@ -4,7 +4,7 @@
 <img src="https://user-images.githubusercontent.com/79734873/148637883-7786afeb-26da-4c44-b93e-e5abc1c36630.png" alt="icon">
 </p>
 
-A simple life game simulator made by [OpenSiv3D](https://github.com/Siv3D/OpenSiv3D).
+A simple life game simulator made by [OpenSiv3D](https://github.com/Siv3D/OpenSiv3D).  
 **Operation verification is performed only on Windows 11. Operation cannot be guaranteed in other environments.**
 
 ## Feature
