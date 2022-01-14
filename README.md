@@ -7,6 +7,8 @@
 A simple life game simulator made by [OpenSiv3D](https://github.com/Siv3D/OpenSiv3D).  
 **Operation verification is performed only on Windows 11. Operation cannot be guaranteed in other environments.**
 
+Website (Japanese) >> [Life Game | Yuulis Home](https://yuulis.github.io/Yuulis-Home/works/lifeGameCpp.html)
+
 ## Feature
 
 * Large simulation field of 100x70 (Can change as you like)
